@@ -5,10 +5,11 @@ import '../core/functions.dart';
 
 class Dilating implements MorpHological {
   final int iterations;
+  final Color? color;
 
   final CoreFunctions coreFunctions;
 
-  Dilating({this.iterations = 1}) : coreFunctions = CoreFunctions();
+  Dilating({this.iterations = 1, this.color}) : coreFunctions = CoreFunctions();
   @override
   Image applyFilter(Image image) {
     final dilatedImage = Image.from(image);
@@ -23,12 +24,13 @@ class Dilating implements MorpHological {
           final neighbor3 = image.getPixel(x, y - 1);
           final neighbor4 = image.getPixel(x, y + 1);
 
-          if (pixel.r == 255 ||
-              neighbor1.r == 255 ||
-              neighbor2.r == 255 ||
-              neighbor3.r == 255 ||
-              neighbor4.r == 255) {
-            dilatedImage.setPixel(x, y, ColorFloat64.rgb(255, 255, 255));
+          final target = color ?? ColorFloat64.rgb(255, 255, 255);
+          if (pixel.r == target.r ||
+              neighbor1.r == target.r ||
+              neighbor2.r == target.r ||
+              neighbor3.r == target.r ||
+              neighbor4.r == target.r) {
+            dilatedImage.setPixel(x, y, target);
           }
         }
       }
